@@ -5,6 +5,7 @@
 
 # ----- Material model: Parabola
 # --- Cross section shape: rectangular
+import time
 from typing import Iterable, List
 from structuralcodes.core.base import Material
 
@@ -188,9 +189,13 @@ def calculate_integral_parts_parabola_rectangular(x: float, c: float, n: float) 
 
 
 if __name__ == '__main__':
+    start_time = time.time()
     xs: CrossSection = CrossSection()
     material: Material = Material(25000.)
-
-    force, d = integral_rect_xs_material_parabola(material, xs, 0.0025, 0, 100.)
+    for i in range(100_000_0):
+        force, d = integral_rect_xs_material_parabola(material, xs, 0.0025, 0, 100.)
+    end_time = time.time()
+    print(f"Total runtime: {end_time - start_time} seconds")
     print(force, d)
+    # time to run: 2.08s
 
