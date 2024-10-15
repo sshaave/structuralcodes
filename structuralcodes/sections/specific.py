@@ -71,6 +71,7 @@ class RectangularSection(GenericSection):
         gp.perimeter = perimeter
         gp.ea = ea
         gp.mass = mass
+        self.gross_properties = gp
         # TODO: more gross sectional properties, and store them in self._gross_properties
 
     @property
