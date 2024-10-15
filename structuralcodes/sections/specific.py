@@ -45,21 +45,25 @@ class RectangularSection(GenericSection):
 
         self.height: float = height
         self.width: float = width
-
+        
+    def calculate_gross_section_properties(self):
         # Calculating gross section properties
         # Gross area
-        area: float = height * width
-        perimeter: float = 2 * (height + width)
-        ea: float = area * geometry.material.get_tangent(eps=0)[0]
+        area: float = self.height * self.width
+        perimeter: float = 2 * (self.height + self.width)
+        ea: float = 0
+        mass: float = 0
+        area_reinforcement: float = 0
         for geo in self.geometry.geometries:
-            pass
-        for geo in self.geometry.point_geometries:
-            pass
+            ea += area * geo.material.get_tangent(eps=0)[0]
+            if geo.density is not None:
+                mass += area * geo.density * 1e-9
 
-        if geometry.density is not None:
-            mass = area * geometry.density * 1e-9
-        else:
-            mass = 0
+        for geo in self.geometry.point_geometries:
+            ea += area * geo.material.get_tangent(eps=0)[0]
+            area_reinforcement += geo.area
+            if geo.density is not None:
+                mass += area * geo.density * 1e-9
 
 
         gp = s_res.GrossProperties()
